@@ -110,4 +110,28 @@ public class Frustrum : MonoBehaviour
 
         fBRight = farPlaneDistance - (cam.transform.up * halfCameraHeightfar) + (cam.transform.right * CameraHalfWidthFar);
     }
+
+    public void SetAABB(ref Object currentObject)
+    {
+
+        Vector3 scale = currentObject.gameObject.transform.localScale / 2;
+        Vector3 forward = currentObject.gameObject.transform.forward;
+        Vector3 up = currentObject.gameObject.transform.up;
+        Vector3 right = currentObject.gameObject.transform.right;
+
+        for (int i = 0; i < aabbPoints; i++)
+        {
+            currentObject.aabb[i] = currentObject.gameObject.transform.position;
+        }
+
+        currentObject.aabb[0] += scale.x * right + scale.y * up + scale.z * forward;
+        currentObject.aabb[1] += scale.x * right + scale.y * up + -scale.z * forward;
+        currentObject.aabb[2] += scale.x * right + -scale.y * up + scale.z * forward;
+        currentObject.aabb[3] += scale.x * right + -scale.y * up + -scale.z * forward;
+        currentObject.aabb[4] += -scale.x * right + scale.y * up + scale.z * forward;
+        currentObject.aabb[5] += -scale.x * right + scale.y * up + -scale.z * forward;
+        currentObject.aabb[6] += -scale.x * right + -scale.y * up + scale.z * forward;
+        currentObject.aabb[7] += -scale.x * right + -scale.y * up + -scale.z * forward;
+    }
+
 }
