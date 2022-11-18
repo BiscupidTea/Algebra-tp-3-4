@@ -94,4 +94,20 @@ public class Frustrum : MonoBehaviour
         nBRight = nearPlaneDistance - (cam.transform.up * halfCameraHeightNear) + (cam.transform.right * CameraHalfWidthNear);
     }
 
+    public void SetFarPoints(Vector3 farPos)
+    {
+        float halfCameraHeightfar = Mathf.Tan((cam.fieldOfView / 2) * Mathf.Deg2Rad) * cam.farClipPlane;
+        float CameraHalfWidthFar = (cam.aspect * halfCameraHeightfar);
+
+        Vector3 farPlaneDistance = cam.transform.position + (cam.transform.forward * cam.farClipPlane);
+
+
+        fTLeft = farPlaneDistance + (cam.transform.up * halfCameraHeightfar) - (cam.transform.right * CameraHalfWidthFar);
+
+        fTRight = farPlaneDistance + (cam.transform.up * halfCameraHeightfar) + (cam.transform.right * CameraHalfWidthFar);
+
+        fBLeft = farPlaneDistance - (cam.transform.up * halfCameraHeightfar) - (cam.transform.right * CameraHalfWidthFar);
+
+        fBRight = farPlaneDistance - (cam.transform.up * halfCameraHeightfar) + (cam.transform.right * CameraHalfWidthFar);
+    }
 }
