@@ -106,6 +106,7 @@ public class Frustrum : MonoBehaviour
         {
             CheckObjetColition(Objects[i]);
         }
+
     }
 
     public void SetNearPoints(Vector3 nearPos)
