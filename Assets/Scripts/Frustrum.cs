@@ -133,7 +133,6 @@ public class Frustrum : MonoBehaviour
 
         Vector3 farPlaneDistance = cam.transform.position + (cam.transform.forward * cam.farClipPlane);
 
-
         fTLeft = farPlaneDistance + (cam.transform.up * halfCameraHeightfar) - (cam.transform.right * CameraHalfWidthFar);
 
         fTRight = farPlaneDistance + (cam.transform.up * halfCameraHeightfar) + (cam.transform.right * CameraHalfWidthFar);
@@ -145,7 +144,6 @@ public class Frustrum : MonoBehaviour
 
     public void SetAABB(ref Object currentObject)
     {
-
         Vector3 scale = currentObject.gameObject.transform.localScale / 2;
         Vector3 forward = currentObject.gameObject.transform.forward;
         Vector3 up = currentObject.gameObject.transform.up;
@@ -205,6 +203,23 @@ public class Frustrum : MonoBehaviour
                 currentObject.gameObject.SetActive(false);
             }
         }
+    }
+    public void OnDrawGizmos()
+    {
+        Debug.DrawLine(nTLeft, fTLeft, Color.red);
+        Debug.DrawLine(nTRight, fTRight, Color.red);
+        Debug.DrawLine(nBLeft, fBLeft, Color.red);
+        Debug.DrawLine(nBRight, fBRight, Color.red);
+
+        Debug.DrawLine(nTLeft, nTRight, Color.blue);
+        Debug.DrawLine(nTRight, nBRight, Color.blue);
+        Debug.DrawLine(nBRight, nBLeft, Color.blue);
+        Debug.DrawLine(nBLeft, nTLeft, Color.blue);
+
+        Debug.DrawLine(fTLeft, fTRight, Color.blue);
+        Debug.DrawLine(fTRight, fBRight, Color.blue);
+        Debug.DrawLine(fBRight, fBLeft, Color.blue);
+        Debug.DrawLine(fBLeft, fTLeft, Color.blue);
     }
 
 }
