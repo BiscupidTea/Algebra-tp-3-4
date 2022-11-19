@@ -74,7 +74,38 @@ public class Frustrum : MonoBehaviour
 
     private void Update()
     {
-        
+        Vector3 frontMultFar = cam.farClipPlane * cam.transform.forward;
+
+        Vector3 nearPos = cam.transform.position;
+        nearPos += cam.transform.forward * cam.nearClipPlane;
+        planes[0].SetNormalAndPosition(cam.transform.forward, nearPos);
+
+
+        Vector3 farPos = cam.transform.position;
+        farPos += (cam.transform.forward) * cam.farClipPlane;
+        planes[1].SetNormalAndPosition(cam.transform.forward * -1, farPos);
+
+        SetNearPoints(nearPos);
+        SetFarPoints(farPos);
+
+        planes[2].Set3Points(cam.transform.position, fBLeft, fTLeft);    
+        planes[3].Set3Points(cam.transform.position, fTRight, fBRight);  
+        planes[4].Set3Points(cam.transform.position, fTLeft, fTRight);   
+        planes[5].Set3Points(cam.transform.position, fBRight, fBLeft);   
+
+        for (int i = 2; i < maxFrustrumPlanes; i++)
+        {
+            planes[i].Flip();
+        }
+
+        for (int i = 0; i < maxObjects; i++)
+        {
+            SetAABB(ref Objects[i]);
+        }
+        for (int i = 0; i < maxObjects; i++)
+        {
+            CheckObjetColition(Objects[i]);
+        }
     }
 
     public void SetNearPoints(Vector3 nearPos)
@@ -132,6 +163,47 @@ public class Frustrum : MonoBehaviour
         currentObject.aabb[5] += -scale.x * right + scale.y * up + -scale.z * forward;
         currentObject.aabb[6] += -scale.x * right + -scale.y * up + scale.z * forward;
         currentObject.aabb[7] += -scale.x * right + -scale.y * up + -scale.z * forward;
+    }
+
+    public void CheckObjetColition(Object currentObject)
+    {
+        bool isInsideF = false;
+
+        for (int i = 0; i < aabbPoints; i++)
+        {
+            int counter = maxFrustrumPlanes;
+
+            for (int j = 0; j < maxFrustrumPlanes; j++)
+            {
+                if (planes[j].GetSide(currentObject.aabb[i]))
+                {
+                    counter--;
+                }
+            }
+
+            if (counter == 0)
+            {
+                //adentro del frustrum
+                isInsideF = true;
+                break;
+            }
+        }
+
+        if (isInsideF)
+        {
+            if (!currentObject.gameObject.activeSelf)
+            {
+                currentObject.gameObject.SetActive(true);
+            }
+        }
+        else
+        {
+            if (currentObject.gameObject.activeSelf)
+            {
+                //afuera del frustrum
+                currentObject.gameObject.SetActive(false);
+            }
+        }
     }
 
 }
