@@ -9,7 +9,7 @@ public class Frustrum : MonoBehaviour
 
     //max values
     private const int maxFrustrumPlanes = 6;
-    private const int maxObjects = 4;
+    private const int maxObjects = 15;
     private const int aabbPoints = 8;
 
     //planos
